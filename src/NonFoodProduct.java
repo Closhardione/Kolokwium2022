@@ -6,7 +6,8 @@ import java.util.Scanner;
 public class NonFoodProduct extends Product{
     Double[] prices;
 
-    private NonFoodProduct(Double[] prices) {
+    private NonFoodProduct(String name, Double[] prices) {
+        super(name);
         this.prices = prices;
     }
 
@@ -25,8 +26,7 @@ public class NonFoodProduct extends Product{
 
             scanner.close();
 
-            return new NonFoodProduct(prices);
-
+            return new NonFoodProduct(name,prices);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
