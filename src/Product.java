@@ -4,6 +4,7 @@ import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Function;
+import java.util.stream.Collectors;
 
 public abstract class Product {
  private String name;
@@ -30,6 +31,23 @@ public abstract class Product {
         }
         products.addAll(newProducts);
 
-    }
 
+    }
+    public static int priceIndex(int year, int month) {
+        if(year<2010 || year>2022 || (year==2022 && month>3) || month<1 || month>12)
+            throw new IndexOutOfBoundsException();
+        return (year-2010) * 12 + (month-1);
+    }
+    public static Product getProduct(String prefix) throws AmbigiousProductException, IndexOutOfBoundsException {
+        List<Product> result = products.stream()
+                .filter(product -> product.getName().startsWith(prefix))
+                .toList();
+        switch(result.size()) {
+            case 0: throw new IndexOutOfBoundsException(prefix);
+            case 1: return result.get(0);
+            default: throw new AmbigiousProductException(result.stream()
+                    .map(product -> product.getName())
+                    .collect(Collectors.toList()));
+        }
+    }
 }

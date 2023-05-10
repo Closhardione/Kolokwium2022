@@ -1,14 +1,11 @@
 import java.io.IOException;
 import java.nio.file.Path;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Scanner;
+import java.util.*;
 
 public class FoodProduct extends Product{
-    private Map<String, Double[]> prices;
+    Map<String, Double[]> prices;
 
-    private FoodProduct(String name,  Map<String, Double[]> prices) {
+    public FoodProduct(String name, Map<String, Double[]> prices) {
         super(name);
         this.prices = prices;
     }
@@ -46,8 +43,18 @@ public class FoodProduct extends Product{
     public double getPrice(int year, int month) {
         int index = priceIndex(year,month);
         double sum=0;
-        for(Double[] provincePrices : price){
+        for(Double[] provincePrices : prices.values()){
             sum += provincePrices[index];
+        }
+        return sum/prices.size();
+
+    }
+    public double getPrice(int year, int month, String province){
+        if(prices.containsKey(province)){
+            return prices.get(province)[priceIndex(year,month)];
+        }
+        else{
+            throw new NoSuchElementException(province);
         }
     }
 }
